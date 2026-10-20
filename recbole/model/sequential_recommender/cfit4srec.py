@@ -212,7 +212,11 @@ class CFIT4SRec(SequentialRecommender):
     def fft_2(self, x, filter):
         f = torch.fft.fft2(x)
         fshift = torch.fft.fftshift(f)
-        return torch.abs(torch.fft.ifft2(torch.fft.ifftshift(fshift.cuda() * filter.cuda())))
+        # Device-aware: the original hardcoded .cuda() crashed on CPU-only
+        # hosts; follow the input tensor's device instead.
+        return torch.abs(torch.fft.ifft2(
+            torch.fft.ifftshift(fshift.to(x.device) * filter.to(x.device))
+        ))
 
     def createBSAilter(self, shape, bandCenter, bandWidth):
         rows, cols = shape

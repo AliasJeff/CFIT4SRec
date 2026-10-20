@@ -39,11 +39,9 @@ def run_recbole(model=None, dataset=None, config_file_list=None, config_dict=Non
     print(config['model'])
 
     import os
-    if os.path.exists('result/{}'.format(config['model'])):
-        print('1')
-        pass
-    else:
-        os.mkdir('result/{}'.format(config['model']))
+    # makedirs(exist_ok=True): the original os.mkdir failed when the parent
+    # 'result/' directory itself did not exist.
+    os.makedirs('result/{}'.format(config['model']), exist_ok=True)
     # init_seed(config['seed'], config['reproducibility'])
 
     # logger initialization

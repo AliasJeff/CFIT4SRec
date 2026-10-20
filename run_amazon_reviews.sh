@@ -50,7 +50,7 @@ for category in "${CATEGORIES[@]}"; do
     echo "Running ${MODEL} on ${category} with seed ${SEED}..."
     echo "Logging to: ${LOG_FILE}"
 
-    extra_args=()
+    extra_args=(--eval_step=10)
     [ -n "${EPOCHS}" ] && extra_args+=(--epochs="${EPOCHS}")
 
     "${PYTHON_BIN}" run_seq.py \
